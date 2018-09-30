@@ -4,6 +4,8 @@ import com.tele2.jurikolo.springbootbook.commons.CommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -28,6 +30,12 @@ public class ProductController {
         model.addAttribute("comments", comments);
         model.addAttribute("newcomment", new CommentForm());
         return "index";
+    }
+
+    @PostMapping("/postComment")
+    public String commentSubmit(@ModelAttribute CommentForm comment) {
+        commentService.postComment(comment);
+        return "redirect:/";
     }
 
     class Product {
