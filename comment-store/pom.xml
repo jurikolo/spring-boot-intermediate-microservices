@@ -131,6 +131,20 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-
 	</pluginRepositories>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>T2Prov Nexus Snapshots</name>
+            <url>http://captools2.tele2.net:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <name>T2Prov Nexus Releases</name>
+            <url>http://captools2.tele2.net:8081/nexus/content/repositories/releases/</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
+
 </project>
