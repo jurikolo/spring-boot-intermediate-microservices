@@ -29,7 +29,7 @@ public class CommentService {
         return response;
     }
 
-    public String portComment(CommentForm comment) {
+    public String postComment(CommentForm comment) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
