@@ -7,3 +7,5 @@ spam-detection/.springBeans
 
 *.zip
 
+.idea/*
+*.iml
