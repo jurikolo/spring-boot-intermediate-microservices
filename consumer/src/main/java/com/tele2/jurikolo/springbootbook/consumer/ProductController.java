@@ -23,7 +23,7 @@ public class ProductController {
     @RequestMapping
     public String home(Model model) {
         final Product product = getDummyProduct();
-        final CommentDTO[] comments = commentsService.getComments(product.getId());
+        final CommentDTO[] comments = commentService.getComments(product.getId());
         model.addAttribute("product", product);
         model.addAttribute("comments", comments);
         model.addAttribute("newcomment", new CommentForm());
