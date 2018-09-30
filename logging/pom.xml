@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.tele2.jurikolo.springbootbook</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>logging</artifactId>
 
