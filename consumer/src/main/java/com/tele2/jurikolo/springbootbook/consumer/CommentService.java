@@ -1,5 +1,6 @@
 package com.tele2.jurikolo.springbootbook.consumer;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.tele2.jurikolo.springbootbook.commons.CommentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class CommentService {
     @LoadBalanced
     private RestTemplate restTemplate;
 
-    @Retryable(maxAttempts = 2)
+    @HystrixCommand(fallbackMethod = "recover")
     public CommentDTO[] getComments(String productId) {
         LOGGER.info("getComments executed");
         CommentDTO[] response = restTemplate.getForObject(
@@ -38,9 +39,8 @@ public class CommentService {
         return response;
     }
 
-    @Recover
-    public CommentDTO[] recover(Throwable e, String productId) {
-        LOGGER.info("requesting comments for product {} failed, retries exceeded", productId);
+    public CommentDTO[] recover(String productId) {
+        LOGGER.info("requesting comments for product {} failed, Hystrix aborted", productId);
         return new CommentDTO[0];
     }
 
