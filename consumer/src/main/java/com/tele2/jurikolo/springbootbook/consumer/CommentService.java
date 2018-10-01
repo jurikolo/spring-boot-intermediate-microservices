@@ -4,7 +4,7 @@ import com.tele2.jurikolo.springbootbook.commons.CommentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +22,17 @@ public class CommentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentService.class);
 
-    @Value("${commentstore.endpoint}")
-    private String endpoint;
+    private static final String ENDPOINT = "http://commentstore";
 
     @Autowired
+    @LoadBalanced
     private RestTemplate restTemplate;
 
     @Retryable(maxAttempts = 2)
     public CommentDTO[] getComments(String productId) {
         LOGGER.info("getComments executed");
         CommentDTO[] response = restTemplate.getForObject(
-                endpoint + "/list/" + productId,
+                ENDPOINT + "/list/" + productId,
                 new CommentDTO[0].getClass()
         );
         return response;
@@ -59,7 +59,7 @@ public class CommentService {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-                endpoint + "/create/",
+                ENDPOINT + "/create/",
                 request,
                 String.class
         );
