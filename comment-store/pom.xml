@@ -35,16 +35,16 @@
 		<dependency>
 			<groupId>com.tele2.jurikolo.springbootbook</groupId>
 			<artifactId>spam-detection</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.tele2.jurikolo.springbootbook</groupId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<artifactId>commons</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.tele2.jurikolo.springbootbook</groupId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<artifactId>logging</artifactId>
 		</dependency>
 		<dependency>

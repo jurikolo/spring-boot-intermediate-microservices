@@ -1,10 +1,11 @@
 package com.tele2.jurikolo.springbootbook.consumer;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.tele2.jurikolo.springbootbook.commons.CommentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,25 +23,24 @@ public class CommentService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CommentService.class);
 
-    @Value("${commentstore.endpoint}")
-    private String endpoint;
+    private static final String ENDPOINT = "http://commentstore";
 
     @Autowired
+    @LoadBalanced
     private RestTemplate restTemplate;
 
-    @Retryable(maxAttempts = 2)
+    @HystrixCommand(fallbackMethod = "recover")
     public CommentDTO[] getComments(String productId) {
         LOGGER.info("getComments executed");
         CommentDTO[] response = restTemplate.getForObject(
-                endpoint + "/list/" + productId,
+                ENDPOINT + "/list/" + productId,
                 new CommentDTO[0].getClass()
         );
         return response;
     }
 
-    @Recover
-    public CommentDTO[] recover(Throwable e, String productId) {
-        LOGGER.info("requesting comments for product {} failed, retries exceeded", productId);
+    public CommentDTO[] recover(String productId) {
+        LOGGER.info("requesting comments for product {} failed, Hystrix aborted", productId);
         return new CommentDTO[0];
     }
 
@@ -59,7 +59,7 @@ public class CommentService {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-                endpoint + "/create/",
+                ENDPOINT + "/create/",
                 request,
                 String.class
         );
